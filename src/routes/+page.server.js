@@ -37,5 +37,36 @@ export const actions = {
             console.error('Todo 추가 오류 : ', error);
             return fail(500, { error: '추가에 실패했습니다. 다시 시도해 주세요.'});
         }
+    },
+
+    toggle: async ({ request }) => {
+        const formData = await request.formData();
+        const id = formData.get('id');
+
+        if(!id) {
+            return fail(400, { erroor: '잘못된 요청입니다.'});
+        }
+
+        try {
+            await query('UPDATE todos SET completed = NOT completed WHERE id= ?', [id]);
+        } catch (error) {
+            console.error('상태 변경 오류: ', error);
+            return fail(500, { error: '상태 변경이 실패했습니다.'});
+        }
+    },
+    delete: async ({ request }) => {
+        const formData = await request.formData();
+        const id = formData.get('id');
+
+        if(!id) {
+            return fail(400, { erroor: '잘못된 요청입니다.'});
+        }
+
+        try {
+            await query('DELETE FROM todos WHERE id = ?', [id]);
+        } catch (error) {
+            console.error('삭제 오류:', error);
+            return fail(500, { error: '삭제에 실패했습니다.'});
+        }
     }
 }

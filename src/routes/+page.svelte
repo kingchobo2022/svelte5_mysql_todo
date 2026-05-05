@@ -25,6 +25,7 @@
             <TodoForm error={form?.error} />
         </section>
 
+        {#if totalCount > 0}
         <div class="stats">
             <span>전체 {totalCount}개</span>
             <div class="divider">|</div>
@@ -32,11 +33,21 @@
             <div class="divider">|</div>
             <div class="completed">완료 {completedCount}개</div>
         </div>
+        {/if}
 
         <section class="todo-list">
-            {#each data.todos as todo (todo.id)}
-                <TodoItem {todo} />
-            {/each}
+            {#if data.error}
+                <p class="error-message">{data.error}</p>
+            {:else if data.todos.length === 0}
+                <div class="empty-state">
+                    <p>📋 아직 할 일이 없습니다.</p>
+                    <p class="empty-hint">위의 입력란에 할 일을 추가해 보세요!</p>
+                </div>
+            {:else}                
+                {#each data.todos as todo (todo.id)}
+                    <TodoItem {todo} />
+                {/each}
+            {/if}                
         </section>
 
     </div>
