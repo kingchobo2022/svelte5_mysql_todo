@@ -1,5 +1,5 @@
 <script>
-
+    import TodoForm from "$lib/components/TodoForm.svelte";
 </script>
 
 <svelte:head>
@@ -14,7 +14,7 @@
         </header>
 
         <section class="form-section">
-            ~
+            <TodoForm />
         </section>
 
         <div class="stats">
