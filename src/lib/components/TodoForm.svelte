@@ -1,11 +1,30 @@
 <script>
-
+    import { enhance } from "$app/forms";
+    let text = $state('');
+    let isSubmitting = $state(false);
 </script>
 
-<form>
+<form
+    method="POST"
+    action="?/create"
+    use:enhance={() => {
+        isSubmitting = true;
+        return async ( {update}) => {
+            await update();
+            text = '';
+            isSubmitting = false;
+        };
+    }}
+>
     <div class="form-group">
-        <input type="text" placeholder="할 일을 입력하세요..." required> 
-        <button type="submit">추가</button>
+        <input type="text" name="text" 
+            bind:value={text}
+            placeholder="할 일을 입력하세요..." 
+            disabled={isSubmitting}
+            required> 
+        <button type="submit" disabled={isSubmitting || !text.trim()}>
+            {isSubmitting ? '추가 중...' : '추가'}
+        </button>
     </div>
 </form>
 
