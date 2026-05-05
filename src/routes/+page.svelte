@@ -1,11 +1,12 @@
 <script>
     import TodoForm from "$lib/components/TodoForm.svelte";
+    import TodoItem from "$lib/components/TodoItem.svelte";
 
     // +page.server.js의 load 함수에서 반환한 데이터
     let { data, form } = $props();
 
     let totalCount = $derived(data.todos.length);
-    let completedCount = $derived(data.tools.filter((t) => t.completed).length);
+    let completedCount = $derived(data.todos.filter((t) => t.completed).length);
     let remainingCount = $derived(totalCount - completedCount);
 </script>
 
@@ -25,15 +26,17 @@
         </section>
 
         <div class="stats">
-            <span>전체 00개</span>
+            <span>전체 {totalCount}개</span>
             <div class="divider">|</div>
-            <div class="remaining">남은 할 일 개</div>
+            <div class="remaining">남은 할 일 {remainingCount}개</div>
             <div class="divider">|</div>
-            <div class="completed">완료 00개</div>
+            <div class="completed">완료 {completedCount}개</div>
         </div>
 
         <section class="todo-list">
-            ~~
+            {#each data.todos as todo (todo.id)}
+                <TodoItem {todo} />
+            {/each}
         </section>
 
     </div>
