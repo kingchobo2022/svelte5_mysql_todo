@@ -2,6 +2,8 @@
     import { enhance } from "$app/forms";
     let text = $state('');
     let isSubmitting = $state(false);
+
+    let { error = null } = $props();
 </script>
 
 <form
@@ -26,6 +28,9 @@
             {isSubmitting ? '추가 중...' : '추가'}
         </button>
     </div>
+    {#if error}
+        <p class="error">{error}</p>
+    {/if}
 </form>
 
 <style>

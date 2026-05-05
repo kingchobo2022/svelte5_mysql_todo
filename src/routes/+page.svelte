@@ -1,5 +1,12 @@
 <script>
     import TodoForm from "$lib/components/TodoForm.svelte";
+
+    // +page.server.js의 load 함수에서 반환한 데이터
+    let { data, form } = $props();
+
+    let totalCount = $derived(data.todos.length);
+    let completedCount = $derived(data.tools.filter((t) => t.completed).length);
+    let remainingCount = $derived(totalCount - completedCount);
 </script>
 
 <svelte:head>
@@ -14,13 +21,13 @@
         </header>
 
         <section class="form-section">
-            <TodoForm />
+            <TodoForm error={form?.error} />
         </section>
 
         <div class="stats">
             <span>전체 00개</span>
             <div class="divider">|</div>
-            <div class="remaining">남은 할 일 00개</div>
+            <div class="remaining">남은 할 일 개</div>
             <div class="divider">|</div>
             <div class="completed">완료 00개</div>
         </div>
